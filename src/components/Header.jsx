@@ -6,7 +6,7 @@ import { Disclosure, Menu, Transition } from '@headlessui/react';
 const navigation = [
   { name: 'Dashboard', href: '/dashboard/', current: true },
   { name: 'Productos', href: '/dashboard/products/', current: false },
-  { name: 'Ventas', href: '#', current: false },
+  { name: 'Login', href: '/login' },
 ];
 const userNavigation = [
   { name: 'Your Profile', href: '#' },
@@ -35,7 +35,9 @@ export default function Header() {
               <div className="flex items-center justify-between h-16">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
-                    <img className="h-8 w-8" src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg" alt="Workflow" />
+                    <a href="/#">
+                    <img className="h-8 w-8" src="https://cdn-icons-png.flaticon.com/512/2362/2362779.png" alt="Workflow" />
+                    </a>
                  </div>
                   <div className="hidden md:block">
                     <div className="ml-10 flex items-baseline space-x-4">

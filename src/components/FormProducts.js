@@ -1,11 +1,11 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
-import { addProduct, updateProduct } from '../services/api/product';
+import { addProduct, updateProducts, uploadImage } from '../services/api/product';
 
 export default function FormProduct({ setOpen, setAlert, product }) {
   const formRef = useRef(null);
   const router = useRouter();
+  const [SelectCategory, setSelectCategory] = useState(true);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -20,31 +20,53 @@ export default function FormProduct({ setOpen, setAlert, product }) {
     // console.log(data);
 
     if (product) {
-      //  console.log(data)
-      updateProduct(product.id, data).then(() => {
-        router.push('/dashboard/products/');
-      });
-    } else {
-      addProduct(data)
-        .then(() => {
-          setAlert({
-            active: true,
-            message: 'product added successfuly',
-            type: 'success',
-            autoClose: false,
+      uploadImage(formData.get('images'))
+        .then((response) => {
+          data.images = [response.location];
+          updateProducts(product.id, data).then(() => {
+            router.push('/dashboard/products/');
           });
-          setOpen(false);
         })
         .catch((error) => {
-          setAlert({
-            active: true,
-            message: error.message,
-            type: 'error',
-            autoClose: false,
-          });
+          console.error(error);
+        });
+    } else {
+      uploadImage(formData.get('images'))
+        .then((response) => {
+          data.images = [response.location];
+          addProduct(data)
+            .then(() => {
+              setAlert({
+                active: true,
+                message: 'product added successfuly',
+                type: 'success',
+                autoClose: false,
+              });
+              setOpen(false);
+            })
+            .catch((error) => {
+              console.log(error);
+              setAlert({
+                active: true,
+                message: error.message,
+                type: 'error',
+                autoClose: false,
+              });
+              setOpen(false);
+            });
+        })
+        .catch((error) => {
+          console.error(error);
         });
     }
   };
+  useEffect(() => {
+    if (product?.category?.id) {
+      setSelectCategory(false);
+    } else {
+      setSelectCategory(true);
+    }
+  }, [product]);
 
   return (
     <form ref={formRef} onSubmit={handleSubmit}>
@@ -82,7 +104,7 @@ export default function FormProduct({ setOpen, setAlert, product }) {
               <select
                 id="category"
                 name="category"
-                defaultValue={product?.category?.name}
+                defaultValue={product?.category?.id}
                 autoComplete="category-name"
                 className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               >
@@ -92,6 +114,21 @@ export default function FormProduct({ setOpen, setAlert, product }) {
                 <option value="4">Toys</option>
                 <option value="5">Others</option>
               </select>
+              {SelectCategory && (
+                <select
+                  id="category"
+                  name="category"
+                  defaultValue={product?.category?.id}
+                  autoComplete="category-name"
+                  className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                >
+                  <option value="1">Clothes</option>
+                  <option value="2">Electronics</option>
+                  <option value="3">Furniture</option>
+                  <option value="4">Toys</option>
+                  <option value="5">Others</option>
+                </select>
+              )}
             </div>
 
             <div className="col-span-6">
@@ -140,7 +177,7 @@ export default function FormProduct({ setOpen, setAlert, product }) {
         <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
           <button
             type="submit"
-            className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-lime-700 hover:bg-lime-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
             Save
           </button>

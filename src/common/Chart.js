@@ -12,7 +12,7 @@ export const Chart = ({ chartData }) => {
           title: {
             display: true,
             text: 'Category',
-            fontSize: 20,
+            fontSize: 40,
           },
           legend: {
             display: true,

@@ -5,6 +5,7 @@ import { XCircleIcon } from '@heroicons/react/24/outline';
 
 export default function Modal({ open, setOpen, children }) {
   const cancelButtonRef = useRef(null);
+
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" initialFocus={cancelButtonRef} onClose={setOpen}>

@@ -18,7 +18,7 @@ const response = await axios.delete(endPoints.products.deleteProduct(id));
 return response.data;
 };
 
-const updateProduct = async (id, body) =>{
+const updateProducts = async (id, body) => {
     const config = {
         headers:{
             accept:'*/*',
@@ -28,6 +28,19 @@ const updateProduct = async (id, body) =>{
     const response = await axios.put(endPoints.products.updateProducts(id), body, config);
     return response.data;
 };
+const uploadImage = async (image) => {
+    const body = {
+      file: image,
+    };
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        accept: '*/*',
+      },
+    };
+    const response  = await axios.post(endPoints.files.addImage, body, config);
+    return response.data;
+  };
 
 
-export { addProduct, deleteProduct, updateProduct};
+export { addProduct, deleteProduct, updateProducts, uploadImage};

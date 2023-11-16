@@ -14,10 +14,7 @@ exports.modules = {
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1853);
 /* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(next_router__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(1664);
-/* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(next_link__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _services_api_product__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(8944);
-
+/* harmony import */ var _services_api_product__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(8944);
 
 
 
@@ -25,6 +22,7 @@ exports.modules = {
 function FormProduct({ setOpen, setAlert, product }) {
     const formRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
     const router = (0,next_router__WEBPACK_IMPORTED_MODULE_2__.useRouter)();
+    const [SelectCategory, setSelectCategory] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(true);
     const handleSubmit = (event)=>{
         event.preventDefault();
         const formData = new FormData(formRef.current);
@@ -39,29 +37,53 @@ function FormProduct({ setOpen, setAlert, product }) {
         };
         // console.log(data);
         if (product) {
-            //  console.log(data)
-            (0,_services_api_product__WEBPACK_IMPORTED_MODULE_4__/* .updateProduct */ .nM)(product.id, data).then(()=>{
-                router.push("/dashboard/products/");
+            (0,_services_api_product__WEBPACK_IMPORTED_MODULE_3__/* .uploadImage */ .Ix)(formData.get("images")).then((response)=>{
+                data.images = [
+                    response.location
+                ];
+                (0,_services_api_product__WEBPACK_IMPORTED_MODULE_3__/* .updateProducts */ .Js)(product.id, data).then(()=>{
+                    router.push("/dashboard/products/");
+                });
+            }).catch((error)=>{
+                console.error(error);
             });
         } else {
-            (0,_services_api_product__WEBPACK_IMPORTED_MODULE_4__/* .addProduct */ .gK)(data).then(()=>{
-                setAlert({
-                    active: true,
-                    message: "product added successfuly",
-                    type: "success",
-                    autoClose: false
+            (0,_services_api_product__WEBPACK_IMPORTED_MODULE_3__/* .uploadImage */ .Ix)(formData.get("images")).then((response)=>{
+                data.images = [
+                    response.location
+                ];
+                (0,_services_api_product__WEBPACK_IMPORTED_MODULE_3__/* .addProduct */ .gK)(data).then(()=>{
+                    setAlert({
+                        active: true,
+                        message: "product added successfuly",
+                        type: "success",
+                        autoClose: false
+                    });
+                    setOpen(false);
+                }).catch((error)=>{
+                    console.log(error);
+                    setAlert({
+                        active: true,
+                        message: error.message,
+                        type: "error",
+                        autoClose: false
+                    });
+                    setOpen(false);
                 });
-                setOpen(false);
             }).catch((error)=>{
-                setAlert({
-                    active: true,
-                    message: error.message,
-                    type: "error",
-                    autoClose: false
-                });
+                console.error(error);
             });
         }
     };
+    (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(()=>{
+        if (product?.category?.id) {
+            setSelectCategory(false);
+        } else {
+            setSelectCategory(true);
+        }
+    }, [
+        product
+    ]);
     return /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("form", {
         ref: formRef,
         onSubmit: handleSubmit,
@@ -118,7 +140,36 @@ function FormProduct({ setOpen, setAlert, product }) {
                                     /*#__PURE__*/ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("select", {
                                         id: "category",
                                         name: "category",
-                                        defaultValue: product?.category?.name,
+                                        defaultValue: product?.category?.id,
+                                        autoComplete: "category-name",
+                                        className: "mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm",
+                                        children: [
+                                            /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("option", {
+                                                value: "1",
+                                                children: "Clothes"
+                                            }),
+                                            /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("option", {
+                                                value: "2",
+                                                children: "Electronics"
+                                            }),
+                                            /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("option", {
+                                                value: "3",
+                                                children: "Furniture"
+                                            }),
+                                            /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("option", {
+                                                value: "4",
+                                                children: "Toys"
+                                            }),
+                                            /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("option", {
+                                                value: "5",
+                                                children: "Others"
+                                            })
+                                        ]
+                                    }),
+                                    SelectCategory && /*#__PURE__*/ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("select", {
+                                        id: "category",
+                                        name: "category",
+                                        defaultValue: product?.category?.id,
                                         autoComplete: "category-name",
                                         className: "mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm",
                                         children: [
@@ -232,7 +283,7 @@ function FormProduct({ setOpen, setAlert, product }) {
                     className: "px-4 py-3 bg-gray-50 text-right sm:px-6",
                     children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("button", {
                         type: "submit",
-                        className: "inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500",
+                        className: "inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-lime-700 hover:bg-lime-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500",
                         children: "Save"
                     })
                 })
@@ -249,8 +300,9 @@ function FormProduct({ setOpen, setAlert, product }) {
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   Ir: () => (/* binding */ deleteProduct),
-/* harmony export */   gK: () => (/* binding */ addProduct),
-/* harmony export */   nM: () => (/* binding */ updateProduct)
+/* harmony export */   Ix: () => (/* binding */ uploadImage),
+/* harmony export */   Js: () => (/* binding */ updateProducts),
+/* harmony export */   gK: () => (/* binding */ addProduct)
 /* harmony export */ });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2167);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
@@ -271,7 +323,7 @@ const deleteProduct = async (id)=>{
     const response = await axios__WEBPACK_IMPORTED_MODULE_0___default()["delete"](_services_api_index__WEBPACK_IMPORTED_MODULE_1__/* ["default"] */ .Z.products.deleteProduct(id));
     return response.data;
 };
-const updateProduct = async (id, body)=>{
+const updateProducts = async (id, body)=>{
     const config = {
         headers: {
             accept: "*/*",
@@ -279,6 +331,19 @@ const updateProduct = async (id, body)=>{
         }
     };
     const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().put(_services_api_index__WEBPACK_IMPORTED_MODULE_1__/* ["default"] */ .Z.products.updateProducts(id), body, config);
+    return response.data;
+};
+const uploadImage = async (image)=>{
+    const body = {
+        file: image
+    };
+    const config = {
+        headers: {
+            "Content-Type": "multipart/form-data",
+            accept: "*/*"
+        }
+    };
+    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().post(_services_api_index__WEBPACK_IMPORTED_MODULE_1__/* ["default"] */ .Z.files.addImage, body, config);
     return response.data;
 };
 

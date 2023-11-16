@@ -24,7 +24,8 @@ export default function Dashboard() {
   };
     return (
       <>
-      <Chart  className= "mb-8 mt-2" chartData={data} />
+      <h1 className="flex text-bold text-lime-700 p-8 justify-center mt-3" >Category Chart</h1>
+       <Chart  className= " mt-8" chartData={data} />
         <div className="flex flex-col">
           <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -68,16 +69,6 @@ export default function Dashboard() {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">${product.price}</span>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                          <a href="#" className="text-indigo-600 hover:text-indigo-900">
-                            Edit
-                          </a>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                          <a href="#" className="text-indigo-600 hover:text-indigo-900">
-                            delete
-                          </a>
                         </td>
                       </tr>
                     ))}

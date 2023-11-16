@@ -24,7 +24,6 @@ function MainLayout({ children }) {
             className: "min-h-full",
             children: [
                 /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(_components_Header__WEBPACK_IMPORTED_MODULE_1__/* ["default"] */ .Z, {}),
-                /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(_common_Nav__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .Z, {}),
                 /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("main", {
                     children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("div", {
                         className: "max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 ",
@@ -45,22 +44,20 @@ __webpack_async_result__();
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Z: () => (/* binding */ Nav)
-/* harmony export */ });
+/* unused harmony export default */
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5893);
 /* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1853);
 /* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(next_router__WEBPACK_IMPORTED_MODULE_1__);
 
 
 function Nav() {
-    const router = (0,next_router__WEBPACK_IMPORTED_MODULE_1__.useRouter)();
+    const router = useRouter();
     const route = router.pathname.substring(1);
-    return /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("nav", {
+    return /*#__PURE__*/ _jsx("nav", {
         className: "bg-white shadow",
-        children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("div", {
+        children: /*#__PURE__*/ _jsx("div", {
             className: "max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8",
-            children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("h1", {
+            children: /*#__PURE__*/ _jsx("h1", {
                 className: "text-3xl font-bold text-gray-900 capitalize",
                 children: route
             })
@@ -104,9 +101,8 @@ const navigation = [
         current: false
     },
     {
-        name: "Ventas",
-        href: "#",
-        current: false
+        name: "Login",
+        href: "/login"
     }
 ];
 const userNavigation = [
@@ -145,10 +141,13 @@ function Header() {
                                         children: [
                                             /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("div", {
                                                 className: "flex-shrink-0",
-                                                children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("img", {
-                                                    className: "h-8 w-8",
-                                                    src: "https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg",
-                                                    alt: "Workflow"
+                                                children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("a", {
+                                                    href: "/#",
+                                                    children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("img", {
+                                                        className: "h-8 w-8",
+                                                        src: "https://cdn-icons-png.flaticon.com/512/2362/2362779.png",
+                                                        alt: "Workflow"
+                                                    })
                                                 })
                                             }),
                                             /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("div", {
@@ -477,7 +476,8 @@ const endPoints = {
         updateCategory: (id)=>`${API}/api/${VERSION}/categories/${id}/`
     },
     files: {
-        addImage: `${API}/api${VERSION}/files/upload/`
+        addImage: `${API}/api${VERSION}/files/upload/`,
+        getFiles: (fileName)=>`${API}/api/${VERSION}/${fileName}`
     }
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (endPoints);
